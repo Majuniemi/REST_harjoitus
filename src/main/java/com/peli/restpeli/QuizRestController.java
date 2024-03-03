@@ -10,22 +10,23 @@ public class QuizRestController {
     private QuizGame quizGame;
 
     public QuizRestController() {
-        QuizQuestion question1 = new QuizQuestion("Kuka on kaikkien aikojen eniten Grammy-palkintoja voittanut mies?",
+        QuizQuestion question1 = new QuizQuestion(
+                "1. Kuka on kaikkien aikojen eniten Grammy-palkintoja voittanut mies?",
                 List.of("A) Quincy Jones", "B) Stevie Wonder", "C) Michael Jackson"), "B");
-        QuizQuestion question2 = new QuizQuestion("Kuka on säveltänyt 'Neljä vuodenaikaa'?",
+        QuizQuestion question2 = new QuizQuestion("2. Kuka on säveltänyt 'Neljä vuodenaikaa'?",
                 List.of("A) Wolfgang Amadeus Mozart", "B) Ludwig van Beethoven", "C) Antonio Vivaldi"), "C");
-        QuizQuestion question3 = new QuizQuestion("Minkä yhtyeen tunnettu albumi on nimeltään 'Rumours'?",
+        QuizQuestion question3 = new QuizQuestion("3. Minkä yhtyeen tunnettu albumi on nimeltään 'Rumours'?",
                 List.of("A) Eagles", "B) Fleetwood Mac", "C) Rolling Stones"), "B");
-        QuizQuestion question4 = new QuizQuestion("Kuka on kaikkien aikojen myydyin naisartisti?",
+        QuizQuestion question4 = new QuizQuestion("4. Kuka on kaikkien aikojen myydyin naisartisti?",
                 List.of("A) Madonna", "B) Whitney Houston", "C) Celine Dion"), "A");
-        QuizQuestion question5 = new QuizQuestion("Kuka on maailman kovin kitaristi?",
+        QuizQuestion question5 = new QuizQuestion("5. Kuka on maailman kovin kitaristi?",
                 List.of("A) Reima Riihimäki", "B) Matti Nieminen", "C) Jimi Hendrix"), "B");
         this.quizGame = new QuizGame(List.of(question1, question2, question3, question4, question5));
     }
 
     @GetMapping("/") // Tämä metodi on juuripolku, jossa näytetään ohjeet pelin pelaamiseen.
     public String getInstructions() {
-        return "Tervetuloa pelaamaan musavisaa!<br><br> Tässä visassa on viisi kysymystä. <br><br>Lähetä GET-pyyntö /question saadaksesi kysymyksen. <br><br>Lähetä POST-pyyntö /answer vastataksesi kysymykseen, käytä vastauksen parametrina 'answer'.";
+        return "Tervetuloa pelaamaan musavisaa!<br><br> Tässä visassa on viisi kysymystä. Voit siirtyä kysymyksissä haluttuun kysymykseen lähettämällä GET-pyynnön /question/1-5. <br><br>Lähetä GET-pyyntö /question saadaksesi kysymyksen. <br><br>Lähetä POST-pyyntö /answer vastataksesi kysymykseen, käytä vastauksen parametrina 'answer'.";
     }
 
     @GetMapping("/question") // Tällä metodilla näytetään kysymys.
@@ -39,15 +40,15 @@ public class QuizRestController {
         }
     }
 
-    @GetMapping("/question/{index}") // Tällä metodilla näytetään kysymys indeksin perusteella.
+    @GetMapping("/question/{index}") // Tällä metodilla voidaan siirtyä haluttuun kysymykseen indeksin perusteella.
     public String getQuestionTextByIndex(@PathVariable int index) {
-        quizGame.setCurrentQuestion(index);
+        quizGame.setCurrentQuestion((index) - 1);
         QuizQuestion currentQuestion = quizGame.getCurrentQuestion();
         if (currentQuestion != null) {
             return currentQuestion.getQuestionText() + "<br><br>" + "Vaihtoehdot:<br><br>"
                     + String.join(", ", currentQuestion.getOptions()) + ".";
         } else {
-            return "Kysymystä ei löytynyt. Käytä indexinä 0-4.";
+            return "Kysymystä ei löytynyt. Käytä indexinä 1-5.";
         }
     }
 

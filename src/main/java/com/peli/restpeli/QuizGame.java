@@ -22,6 +22,8 @@ public class QuizGame {
     public void setCurrentQuestion(int index) {
         if (index >= 0 && index < questions.size()) {
             currentQuestionIndex = index;
+        } else {
+            currentQuestionIndex = -1;
         }
     }
 
