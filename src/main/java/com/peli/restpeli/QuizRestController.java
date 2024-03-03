@@ -39,6 +39,18 @@ public class QuizRestController {
         }
     }
 
+    @GetMapping("/question/{index}") // Tällä metodilla näytetään kysymys indeksin perusteella.
+    public String getQuestionTextByIndex(@PathVariable int index) {
+        quizGame.setCurrentQuestion(index);
+        QuizQuestion currentQuestion = quizGame.getCurrentQuestion();
+        if (currentQuestion != null) {
+            return currentQuestion.getQuestionText() + "<br><br>" + "Vaihtoehdot:<br><br>"
+                    + String.join(", ", currentQuestion.getOptions()) + ".";
+        } else {
+            return "Kysymystä ei löytynyt. Käytä indexinä 0-4.";
+        }
+    }
+
     @PostMapping("/answer") // Tällä metodilla tarkistetaan vastaus.
     public String checkAnswer(@RequestParam String answer) {
         QuizQuestion currentQuestion = quizGame.getCurrentQuestion();

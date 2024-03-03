@@ -19,6 +19,12 @@ public class QuizGame {
         }
     }
 
+    public void setCurrentQuestion(int index) {
+        if (index >= 0 && index < questions.size()) {
+            currentQuestionIndex = index;
+        }
+    }
+
     public boolean moveToNextQuestion() {
         currentQuestionIndex++;
         return currentQuestionIndex < questions.size();
